@@ -1,22 +1,26 @@
-import React from 'react';
-import { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./pages/Layout";
+import About from "./pages/About";
+import Student from "./pages/Student";
+import Tutor from "./pages/Tutor";
+import NoPage from "./pages/NoPage";
 
-function MyForm() {
-    const [name, setName] = useState("");
-    
-    return (
-    <form>
-      <label>Enter your name:
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)} />
-      </label>
-    </form>
-  )
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<About />} />
+          <Route path="student" element={<Student />} />
+          <Route path="tutor" element={<Tutor />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-const container = document.getElementById('root');
-const root = ReactDOM.createRoot(container);
-root.render(<MyForm />);
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+
