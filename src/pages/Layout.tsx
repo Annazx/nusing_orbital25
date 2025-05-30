@@ -19,6 +19,9 @@ const Layout = () => {
           <li>
             <Link to="/tutor">I'm a peer tutor</Link>
           </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
         </ul>
       </nav>
 
