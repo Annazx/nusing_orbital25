@@ -14,13 +14,13 @@ const Layout = () => {
             <Link to="/">About</Link>
           </li>
           <li>
-            <Link to="/student">I'm a student</Link>
+            <Link to="/student">Find a tutor</Link>
           </li>
           <li>
-            <Link to="/tutor">I'm a peer tutor</Link>
+            <Link to="/tutor">Profile</Link>
           </li>
           <li>
-            <Link to="/login">Login</Link>
+            <Link to="/tutor">Appointment Dashboard</Link>
           </li>
         </ul>
       </nav>
