@@ -1,10 +1,10 @@
 const About = () => {
   return (
     <>
-      <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"></link>
-      </head>
       <h1>About</h1>
+      <h3>What is NUSing My Brain?</h3>
+      <h3>Steps to Get Started</h3>
+      <h3>Privacy Policy</h3>
     </>
   );
 };

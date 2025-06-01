@@ -1,10 +1,15 @@
 import { useState } from 'react'
 
 export function Header(props) {
+    const { appts } = props
+    const apptsLength = appts.filter(val => !val.complete).length
+
+    const isPlural = appts.length !== 1
+    const withS = isPlural ? 's' : ''
     return (
         <header>
             <h1>Tutor's Dashboard</h1>
-            <h3>You have 3 upcoming appointments.</h3>
+            <h3>You have {apptsLength} upcoming appointment{withS}.</h3>
         </header>
     )
 }
