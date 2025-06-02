@@ -37,46 +37,49 @@ b. Textbox for comments
 3. Supabase (Backend) 
 
 ## How are we different from similar platforms? 
-● Traditional Tuition Services
-○ Typical tutoring platforms are geared towards general education and often lack tutors familiar with the highly specific content and assessment styles of NUS modules. These platforms do not allow filtering by university module modes or match students based on university-level academic experience.
-● Telegram Study Groups or Reddit Threads
-○ While informal networks like Telegram groups or Reddit threads (e.g.  r/nus) exist, they are disorganized, hard to navigate, and not designed for structured academic support. Our platform offers curated tutor profiles, scheduled bookings, and credibility through reviews, which are features lacking in other platforms.
-● NUS Peer Tutoring Programmes
-○ Existing peer tutoring services are limited in scale, usually module or faculty specific, and cannot be accessed freely by all students. Our platform removes these constraints and offers a centralized, searchable marketplace across all faculties and modules. 
+### Traditional Tuition Services
+ Typical tutoring platforms are geared towards general education and often lack tutors familiar with the highly specific content and assessment styles of NUS modules. These platforms do not allow filtering by university module modes or match students based on university-level academic experience.
+### Telegram Study Groups or Reddit Threads
+ While informal networks like Telegram groups or Reddit threads (e.g.  r/nus) exist, they are disorganized, hard to navigate, and not designed for structured academic support. Our platform offers curated tutor profiles, scheduled bookings, and credibility through reviews, which are features lacking in other platforms.
+### NUS Peer Tutoring Programmes
+ Existing peer tutoring services are limited in scale, usually module or faculty specific, and cannot be accessed freely by all students. Our platform removes these constraints and offers a centralized, searchable marketplace across all faculties and modules. 
 
 ## Development Plan 
-3rd week of May: Finalized project scope and team responsibilities
-4th week of May: Created Mockup using Figma
-5th week of May: Pick up necessary technologies - React, Nodejs, Expressjs, Supabase
-1st Week of June:
-• Implement user authentication (login/signup) 
-• Route users to setup pages based on roles (student / peer tutor)
-• Begin frontend development of tutor profile form (modules, timing, rates)
-2nd Week of June:
-• Store tutor profile data in Supabase
-• Implement search functionality to find tutors based on module and availability
-• Start basic UI for student reviews
-3rd Week of June:
-• Complete student review system (basic version)
-• Complete and test tutor search functionality
-• Finalize tutor profile creation and edit feature
-• Conduct internal testing for main page routing and profile creation
-4th Week of June:
-• Debug core features
-• Polish UI for tutor cards, profile pages, and search filters
-1st Week of July:
-• Implement chat function to allow real-time or asynchronous communication between students and tutors
-• Build chat backend endpoints and integrate with frontend interface
-2nd Week of July:
-• Extend student reviews ( Numerical rating and text-based comment)
-3rd Week of July:
-• Conduct full system testing
-• Refine chat experience and tutor-student communication flow
-• Improve search/filter speed and UI
-4th Week of July:
-• Final UI polish and bug fixes
-• Deploy web app to Vercel
-• Prepare project presentation materials and user guide
+### 3rd week of May
+- Finalized project scope and team responsibilities
+### 4th week of May
+- Created Mockup using Figma
+### 5th week of May
+- Pick up necessary technologies - React, Nodejs, Expressjs, Supabase
+### 1st Week of June
+- Implement user authentication (login/signup) 
+- Route users to setup pages based on roles (student / peer tutor)
+- Begin frontend development of tutor profile form (modules, timing, rates)
+### 2nd Week of June
+- Store tutor profile data in Supabase
+- Implement search functionality to find tutors based on module and availability
+- Start basic UI for student reviews
+### 3rd Week of June
+- Complete student review system (basic version)
+- Complete and test tutor search functionality
+- Finalize tutor profile creation and edit feature
+- Conduct internal testing for main page routing and profile creation
+### 4th Week of June
+- Debug core features
+- Polish UI for tutor cards, profile pages, and search filters
+### 1st Week of July
+- Implement chat function to allow real-time or asynchronous communication between students and tutors
+- Build chat backend endpoints and integrate with frontend interface
+### 2nd Week of July
+- Extend student reviews ( Numerical rating and text-based comment)
+### 3rd Week of July
+- Conduct full system testing
+- Refine chat experience and tutor-student communication flow
+- Improve search/filter speed and UI
+### 4th Week of July
+- Final UI polish and bug fixes
+- Deploy web app to Vercel
+- Prepare project presentation materials and user guide
 
 ## Problem Motivation
 The highly specialized nature of NUS courses often makes it difficult to find effective and relatable tutoring help through traditional services. These services rarely have tutors familiar with NUS-specific content, assessment formats, or the expectations of individual professors. We believe that the best tutors are often fellow NUS students—people who have just completed the modules, understand the curriculum deeply, and can empathize with the academic challenges faced.
@@ -85,16 +88,16 @@ Our platform solves this gap by enabling peer-to-peer tutoring based on recent, 
 
 ## Core Features
 1. Main page set up
-a. Users are directed to different set-up page based on their roles (student / peer tutors) 
+- Users are directed to different set-up page based on their roles (student / peer tutors) 
 2. Upload student tutor profile
-a. Personal information, modules taught, available timings, preferred rates
+- Personal information, modules taught, available timings, preferred rates
 3. Student reviews for tutors
 4. Search function for suitable tutors based on module and availability
 Features to be completed by the mid of July: 
 1. Chat function to allow students schedule lessons with their tutors
 2. Student reviews for tutors
-a. Overall rating in numeral form
-b. Textbox for comments
+- Overall rating in numeral form
+- Textbox for comments
 
 
 ## Getting Started
