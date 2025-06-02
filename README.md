@@ -79,7 +79,7 @@ b. Textbox for comments
 ### 4th Week of July
 - Final UI polish and bug fixes
 - Deploy web app to Vercel
-- Prepare project presentation materials and user guide
+ Prepare project presentation materials and user guide
 
 ## Problem Motivation
 The highly specialized nature of NUS courses often makes it difficult to find effective and relatable tutoring help through traditional services. These services rarely have tutors familiar with NUS-specific content, assessment formats, or the expectations of individual professors. We believe that the best tutors are often fellow NUS students—people who have just completed the modules, understand the curriculum deeply, and can empathize with the academic challenges faced.
@@ -87,15 +87,15 @@ The highly specialized nature of NUS courses often makes it difficult to find ef
 Our platform solves this gap by enabling peer-to-peer tutoring based on recent, relevant module experience.
 
 ## Core Features
-1. Main page set up
+### 1. Main page set up
 - Users are directed to different set-up page based on their roles (student / peer tutors) 
-2. Upload student tutor profile
+### 2. Upload student tutor profile
 - Personal information, modules taught, available timings, preferred rates
-3. Student reviews for tutors
-4. Search function for suitable tutors based on module and availability
-Features to be completed by the mid of July: 
-1. Chat function to allow students schedule lessons with their tutors
-2. Student reviews for tutors
+### 3. Student reviews for tutors
+### 4. Search function for suitable tutors based on module and availability
+### Features to be completed by the mid of July: 
+#### 1. Chat function to allow students schedule lessons with their tutors
+#### 2. Student reviews for tutors
 - Overall rating in numeral form
 - Textbox for comments
 
