@@ -94,8 +94,8 @@ Our platform solves this gap by enabling peer-to-peer tutoring based on recent, 
 ### 3. Student reviews for tutors
 ### 4. Search function for suitable tutors based on module and availability
 ### Features to be completed by the mid of July: 
-#### 1. Chat function to allow students schedule lessons with their tutors
-#### 2. Student reviews for tutors
+### 1. Chat function to allow students schedule lessons with their tutors
+### 2. Student reviews for tutors
 - Overall rating in numeral form
 - Textbox for comments
 
