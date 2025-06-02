@@ -6,9 +6,11 @@ import Student from "./pages/Student.tsx";
 import Tutor from "./pages/Tutor.tsx";
 import NoPage from "./pages/NoPage.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import SignUp from "./pages/SignUp.tsx";
 
 export default function App() {
   return (
+    <>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -17,9 +19,11 @@ export default function App() {
           <Route path="tutor" element={<Tutor />} />
           <Route path="*" element={<NoPage />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="signup" element={<SignUp />} />
         </Route>
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 

@@ -78,18 +78,50 @@ export function List(props) {
     )
 }
 
+export function Input() {
+  return (
+    <div>
+      <h3>Create a new appointment</h3>
+      <fieldset>
+        <input placeholder="Name" />
+        <input placeholder="Date" />
+        <input placeholder="Time" />
+        <input placeholder="Subject" />
+      </fieldset>
+      <button>
+        Add
+      </button>
+    </div>
+  )
+}
+
 const Tutor = () => {
-  const appts = [
-    { name: "Harry Potter", class: "Divination", date: "1/29/19", time: "9:00 am", complete: true },
-    { name: "Luna", class: "Divination", date: "7/12/23", time: "9:00 am", complete: false },
-    { name: "Albus", class: "Defence Against the Dark Arts", date: "1/2/23", time: "10:00 am", complete: false },
-    { name: "Snape", class: "Magical Creatures", date: "9/10/23", time: "12:00 am", complete: true },
-  ]
+    const [appts, setAppts] = useState([])
+//   const appts = [
+//     { name: "Harry Potter", class: "Divination", date: "1/29/19", time: "9:00 am", complete: true },
+//     { name: "Luna", class: "Divination", date: "7/12/23", time: "9:00 am", complete: false },
+//     { name: "Albus", class: "Defence Against the Dark Arts", date: "1/2/23", time: "10:00 am", complete: false },
+//     { name: "Snape", class: "Magical Creatures", date: "9/10/23", time: "12:00 am", complete: true },
+//   ]
+    function handleAddAppt(newAppt) {
+        const newApptList = [...appts, newAppt]
+
+    }
+
+    function handleEditAppt() {
+
+    }
+
+    function handleDeleteAppt() {
+
+    }
+    
   return (
     <>
       <Header appts={appts}/>
       <Tabs appts={appts}/>
       <List appts={appts}/>
+      <Input appts={appts} />
     </>
   );
 };

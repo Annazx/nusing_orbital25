@@ -17,7 +17,7 @@ const Layout = () => {
             <Link to="/student">Find a tutor</Link>
           </li>
           <li>
-            <Link to="/tutor">Create a Profile</Link>
+            <Link to="/signup">Create a Profile</Link>
           </li>
           <li>
             <Link to="/tutor">Appointment Dashboard</Link>
