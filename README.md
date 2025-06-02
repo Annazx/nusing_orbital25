@@ -18,14 +18,16 @@ For Students Seeking Supplemental Income: As a student who wants to earn some ex
 For Students Facing Academic Challenges: As a student struggling with certain courses, I want to get help from approachable and trustworthy peers, who’ve already succeeded in those classes.
 Scope of Project: 
 The Web App provides a specialized marketplace platform that connects NUS students seeking academic assistance with qualified peer tutors who have demonstrated mastery in specific university modules. 
-Features to be completed by the mid of June: 
+
+## Features to be completed by the mid of June: 
 1. Main page set up
 a. Users are directed to different set-up page based on their roles (student / peer tutors) 
 2. Upload student tutor profile
 a. Personal information, modules taught, available timings, preferred rates
 3. Student reviews for tutors
 4. Search function for suitable tutors based on module and availability
-Features to be completed by the mid of July: 
+
+## Features to be completed by the mid of July: 
 1. Chat function to allow students schedule lessons with their tutors
 2. Student reviews for tutors
 a. Overall rating in numeral form
