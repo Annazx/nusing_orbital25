@@ -12,8 +12,13 @@
     "@heroui/react": "^2.7.10",
     "framer-motion": "^12.16.0",
     "next": "^15.3.3",
+<<<<<<< HEAD
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+=======
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+>>>>>>> effa68ae8898c2f9a7ad6fae249c2813b96758e9
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
