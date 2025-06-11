@@ -1,5 +1,4 @@
 import { Button, Link } from "@heroui/react";
-import { GoSmiley } from "react-icons/go"
 
 export default function Home() {
   return (
@@ -10,7 +9,6 @@ export default function Home() {
         href="/members"
         color="primary"
         variant="bordered"
-        startContent={<GoSmiley size={20} />}
       >
         Click me
       </Button>
