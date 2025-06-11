@@ -84,7 +84,7 @@ Polish UI for tutor cards, profile pages, and search filters
 Implement chat function to allow real-time or asynchronous communication between students and tutors  
 Build chat backend endpoints and integrate with frontend interface  
 2nd Week of July  
-Extend student reviews ( Numerical rating and text-based comment)  
+Extend student reviews (Numerical rating and text-based comment)  
 3rd Week of July  
 Conduct full system testing  
 Refine chat experience and tutor-student communication flow  
