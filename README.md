@@ -1,13 +1,13 @@
- NUSing My Brain
+###NUSing My Brain
 A tutoring web application created for NUS students by NUS students.
 
-Proposed Level of Achievement
+##Proposed Level of Achievement
 Project Gemini
 
-Description
+##Description
 NUSing My Brain is a peer-to-peer tutoring web app designed specifically for the NUS community. Our mission is to connect students seeking academic support with peers who have excelled in specific modules and can offer tailored, relatable help. Whether you're a student needing a confidence boost in your coursework or a tutor wanting to help others while reinforcing your own understanding, this platform makes it easy to connect, learn, and grow together.
 
-Motivation
+##Motivation
 The specialized nature of NUS courses makes it tough to find qualified tutors. Traditional tutoring services often don't have people familiar with the unique content and assessment methods we deal with here. We realize that the best tutors are often fellow students who have just completed the same modules, fully understand the curriculum, know what professors expect, and can relate to the common struggles we face. Aim: To connect NUS students seeking academic assistance with qualified peer tutors who have demonstrated mastery in specific university modules. User Stories: For Aspiring Peer Tutors: As a student who’s done well academically, I want a simple platform that makes it easy to connect with students who need help and set up tutoring sessions that work for both of us.
 
 For Students Seeking Supplemental Income: As a student who wants to earn some extra cash while expanding my social circle, I want an easy-to-use system to offer tutoring services to my peers and negotiate the tuition rate with them.
