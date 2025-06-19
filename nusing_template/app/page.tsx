@@ -13,7 +13,7 @@ export default function Home() {
       <div className="inline-block max-w-xl text-center justify-center">
         <span className={title()}>Welcome to&nbsp;</span>
         <br />
-        <span className={title({ color: "violet" })}>
+        <span className={title()}>
           NUSing My Brain
         </span>
         <div className={subtitle({ class: "mt-4" })}>
