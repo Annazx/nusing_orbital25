@@ -29,14 +29,14 @@ export default function Home() {
             radius: "full",
             variant: "shadow",
           })}
-          href={siteConfig.links.docs}
+          href="/student"
         >
           Student
         </Link>
         <Link
           isExternal
           className={buttonStyles({ variant: "shadow", radius: "full" })}
-          href={siteConfig.links.github}
+          href="/tutor"
         >
           Peer tutor
         </Link>
