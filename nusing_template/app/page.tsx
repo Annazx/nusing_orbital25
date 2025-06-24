@@ -25,7 +25,6 @@ export default function Home() {
         <Link
           isExternal
           className={buttonStyles({
-            color: "primary",
             radius: "full",
             variant: "shadow",
           })}
@@ -39,13 +38,6 @@ export default function Home() {
           href="/tutor"
         >
           Peer tutor
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "shadow", radius: "full" })}
-          href="/login"
-        >
-          Login
         </Link>
       </div>
 
