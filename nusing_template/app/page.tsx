@@ -40,6 +40,13 @@ export default function Home() {
         >
           Peer tutor
         </Link>
+        <Link
+          isExternal
+          className={buttonStyles({ variant: "shadow", radius: "full" })}
+          href="/login"
+        >
+          Login
+        </Link>
       </div>
 
       <div className="mt-8">
