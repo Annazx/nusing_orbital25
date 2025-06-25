@@ -22,7 +22,7 @@ export default function LoginPage() {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
         toast.success('Logged in successfully!');
-        router.push('/tutors');
+        router.push('/tutor');
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -33,7 +33,7 @@ export default function LoginPage() {
           createdAt: new Date(),
         });
         toast.success('Account created! Please set up your profile.');
-        router.push('/tutors/me/setup'); // Redirect to profile setup
+        router.push('/tutor'); // Redirect to profile setup
       }
       toast.dismiss(loadingToast);
     } catch (error) {
