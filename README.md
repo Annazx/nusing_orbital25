@@ -1,19 +1,25 @@
 # NUSing My Brain
+
 A tutoring web application created for NUS students by NUS students.
 
 ## Proposed Level of Achievement
+
 Project Gemini
 
 ## Description
+
 NUSing My Brain is a peer-to-peer tutoring web app designed specifically for the NUS community. Our mission is to connect students seeking academic support with peers who have excelled in specific modules and can offer tailored, relatable help. Whether you're a student needing a confidence boost in your coursework or a tutor wanting to help others while reinforcing your own understanding, this platform makes it easy to connect, learn, and grow together.
 
 ## Problem Motivation
+
 The highly specialized nature of NUS courses often makes it difficult to find effective and relatable tutoring help through traditional services. These services rarely have tutors familiar with NUS-specific content, assessment formats, or the expectations of individual professors. We believe that the best tutors are often fellow NUS students—people who have just completed the modules, understand the curriculum deeply, and can empathize with the academic challenges faced. Our platform solves this gap by enabling peer-to-peer tutoring based on recent, relevant module experience.
 
 ## Aim
-To connect NUS students seeking academic assistance with qualified peer tutors who have demonstrated mastery in specific university modules. 
 
-## User Stories 
+To connect NUS students seeking academic assistance with qualified peer tutors who have demonstrated mastery in specific university modules.
+
+## User Stories
+
 For Aspiring Peer Tutors: As a student who’s done well academically, I want a simple platform that makes it easy to connect with students who need help and set up tutoring sessions that work for both of us.
 
 For Students Seeking Supplemental Income: As a student who wants to earn some extra cash while expanding my social circle, I want an easy-to-use system to offer tutoring services to my peers and negotiate the tuition rate with them.
@@ -21,19 +27,27 @@ For Students Seeking Supplemental Income: As a student who wants to earn some ex
 For Students Facing Academic Challenges: As a student struggling with certain courses, I want to get help from approachable and trustworthy peers, who’ve already succeeded in those classes. Scope of Project: The Web App provides a specialized marketplace platform that connects NUS students seeking academic assistance with qualified peer tutors who have demonstrated mastery in specific university modules.
 
 ## Core Features
-### 1. Main page set up  
-Users are directed to different set-up page based on their roles (student / peer tutors)  
-### 2. Upload student tutor profile  
-Personal information, modules taught, available timings, preferred rates  
-### 3. Student reviews for tutors  
-### 4. Search function for suitable tutors based on module and availability  
+
+### 1. Main page set up
+
+Users are directed to different set-up page based on their roles (student / peer tutors)
+
+### 2. Upload student tutor profile
+
+Personal information, modules taught, available timings, preferred rates
+
+### 3. Student reviews for tutors
+
+### 4. Search function for suitable tutors based on module and availability
 
 ## Tech Stack
+
 React (Frontend)
 Express + Node.js
 Supabase (Backend)
 
 ## How are we different from similar platforms?
+
 Traditional Tuition Services  
 Typical tutoring platforms are geared towards general education and often lack tutors familiar with the highly specific content and assessment styles of NUS modules. These platforms do not allow filtering by university module modes or match students based on university-level academic experience.
 
@@ -44,20 +58,30 @@ NUS Peer Tutoring Programmes
 Existing peer tutoring services are limited in scale, usually module or faculty specific, and cannot be accessed freely by all students. Our platform removes these constraints and offers a centralized, searchable marketplace across all faculties and modules.
 
 ## Features to be completed by the mid of June
-### Main page set up  
-Users are directed to different set-up page based on their roles (student / peer tutors)  
-### Upload student tutor profile   
-Personal information, modules taught, available timings, preferred rates  
-### Student reviews for tutors  
-Search function for suitable tutors based on module and availability  
+
+### Main page set up
+
+Users are directed to different set-up page based on their roles (student / peer tutors)
+
+### Upload student tutor profile
+
+Personal information, modules taught, available timings, preferred rates
+
+### Student reviews for tutors
+
+Search function for suitable tutors based on module and availability
 
 ## Features to be completed by the mid of July
+
 ### Chat function to allow students schedule lessons with their tutors
-### Student reviews for tutors 
-1. Overall rating in numeral form   
+
+### Student reviews for tutors
+
+1. Overall rating in numeral form
 2. Textbox for comments
 
 ## Development Plan
+
 3rd week of May  
 Finalized project scope and team responsibilities  
 4th week of May  
@@ -91,12 +115,12 @@ Refine chat experience and tutor-student communication flow
 Improve search/filter speed and UI  
 4th Week of July  
 Final UI polish and bug fixes  
-Deploy web app to Vercel Prepare project presentation materials and user guide  
+Deploy web app to Vercel Prepare project presentation materials and user guide
 
-## Getting Started  
-Click on the link below to preview NUSing My Brain:   
-https://nusing-my-brain-orbital25.vercel.app/  
+## Getting Started
 
- 
+Click on the link below to preview NUSing My Brain:  
+https://nusing-my-brain-orbital25.vercel.app/
+
 message.txt
 7 KB

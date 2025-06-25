@@ -15,7 +15,7 @@ const firebaseConfig = {
   storageBucket: "nusing-my-brain.firebasestorage.app",
   messagingSenderId: "304395979913",
   appId: "1:304395979913:web:61ce5de5a8248ebb3c0a58",
-  measurementId: "G-30Q6WK34J1"
+  measurementId: "G-30Q6WK34J1",
 };
 
 // Initialize Firebase
