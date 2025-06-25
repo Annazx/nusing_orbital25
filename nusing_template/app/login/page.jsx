@@ -1,61 +1,85 @@
 'use client';
-// app/tutors/page.jsx
-import { useState, useEffect } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
-import TutorCard from '@/components/TutorCard';
+// app/(auth)/login/page.jsx
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { auth, db } from '../../config/firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import toast from 'react-hot-toast';
 
-export default function TutorsPage() {
-  const [tutors, setTutors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+export default function LoginPage() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('student'); // 'student' or 'tutor'
+  const router = useRouter();
 
-  useEffect(() => {
-    const fetchTutors = async () => {
-      setLoading(true);
-      try {
-        // Query the 'users' collection for users with the role 'tutor'
-        const q = query(collection(db, 'users'), where('role', '==', 'tutor'), where('profileComplete', '==', true));
-        const querySnapshot = await getDocs(q);
-        const tutorsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setTutors(tutorsData);
-      } catch (error) {
-        console.error("Error fetching tutors: ", error);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const loadingToast = toast.loading('Processing...');
+
+    try {
+      if (isLogin) {
+        await signInWithEmailAndPassword(auth, email, password);
+        toast.success('Logged in successfully!');
+        router.push('/tutors');
+      } else {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        // Create user profile in Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+          email: user.email,
+          role: role,
+          createdAt: new Date(),
+        });
+        toast.success('Account created! Please set up your profile.');
+        router.push('/tutors/me/setup'); // Redirect to profile setup
       }
-      setLoading(false);
-    };
-
-    fetchTutors();
-  }, []);
-
-  const filteredTutors = tutors.filter(tutor => 
-    tutor.modules?.some(module => module.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+      toast.dismiss(loadingToast);
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error(error.message.replace('Firebase: ', ''));
+    }
+  };
 
   return (
-    <div>
-      <h1 className="text-4xl font-bold mb-6">Find Your Tutor</h1>
-      <div className="mb-8">
-        <input 
-          type="text" 
-          placeholder="Search by module code (e.g., CS2040S)" 
-          className="input input-bordered w-full max-w-lg"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+    <div className="flex justify-center items-center">
+      <div className="card w-full max-w-sm shadow-2xl bg-base-100">
+        <form className="card-body" onSubmit={handleSubmit}>
+          <h2 className="card-title text-center text-2xl">{isLogin ? 'Login' : 'Sign Up'}</h2>
+          
+          <div className="form-control">
+            <label className="label"><span className="label-text">Email</span></label>
+            <input type="email" placeholder="email@u.nus.edu" className="input input-bordered" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="form-control">
+            <label className="label"><span className="label-text">Password</span></label>
+            <input type="password" placeholder="password" className="input input-bordered" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
 
-      {loading ? (
-        <div className="text-center"><span className="loading loading-spinner loading-lg"></span></div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTutors.length > 0 ? (
-            filteredTutors.map(tutor => <TutorCard key={tutor.id} tutor={tutor} />)
-          ) : (
-            <p>No tutors found matching your criteria.</p>
+          {!isLogin && (
+            <div className="form-control mt-4">
+              <label className="label cursor-pointer">
+                <span className="label-text">I want to be a Student</span> 
+                <input type="radio" name="role" className="radio checked:bg-blue-500" value="student" checked={role === 'student'} onChange={() => setRole('student')} />
+              </label>
+              <label className="label cursor-pointer">
+                <span className="label-text">I want to be a Tutor</span> 
+                <input type="radio" name="role" className="radio checked:bg-green-500" value="tutor" checked={role === 'tutor'} onChange={() => setRole('tutor')} />
+              </label>
+            </div>
           )}
-        </div>
-      )}
+
+          <div className="form-control mt-6">
+            <button type="submit" className="btn btn-primary">{isLogin ? 'Login' : 'Sign Up'}</button>
+          </div>
+          <p className="text-center mt-4">
+            <a href="#" className="link link-hover" onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
+            </a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
