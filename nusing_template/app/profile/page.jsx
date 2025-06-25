@@ -1,9 +1,9 @@
 import { title } from "@/components/primitives";
 
-export default function Students() {
+export default function Profile() {
   return (
     <div>
-      <h1 className={title()}>Blog</h1>
+      <h1 className={title()}>Profile</h1>
     </div>
   );
 }
