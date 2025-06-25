@@ -1,8 +1,9 @@
+// app/tutors/page.jsx (REVISED)
 'use client';
-// app/tutors/page.jsx
 import { useState, useEffect } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+// We only need collection and getDocs from firestore now for the base query
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 import TutorCard from '@/components/TutorCard';
 
 export default function TutorsPage() {
@@ -14,9 +15,10 @@ export default function TutorsPage() {
     const fetchTutors = async () => {
       setLoading(true);
       try {
-        // Query the 'users' collection for users with the role 'tutor'
-        const q = query(collection(db, 'users'), where('role', '==', 'tutor'), where('profileComplete', '==', true));
-        const querySnapshot = await getDocs(q);
+        // REVISED QUERY: Simply fetch all documents from the 'tutors' collection.
+        // The existence of a document here implies it's a complete tutor profile.
+        const tutorsCollectionRef = collection(db, 'tutors');
+        const querySnapshot = await getDocs(tutorsCollectionRef);
         const tutorsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setTutors(tutorsData);
       } catch (error) {
@@ -28,8 +30,10 @@ export default function TutorsPage() {
     fetchTutors();
   }, []);
 
+  // Filtering logic now checks the 'classes' array
   const filteredTutors = tutors.filter(tutor => 
-    tutor.modules?.some(module => module.toLowerCase().includes(searchTerm.toLowerCase()))
+    tutor.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tutor.classes?.some(cls => cls.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -38,7 +42,7 @@ export default function TutorsPage() {
       <div className="mb-8">
         <input 
           type="text" 
-          placeholder="Search by module code (e.g., CS2040S)" 
+          placeholder="Search by tutor name or class (e.g., Calculus)" 
           className="input input-bordered w-full max-w-lg"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
