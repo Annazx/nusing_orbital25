@@ -26,7 +26,7 @@ export const siteConfig = {
     },
   ],
   navMenuItems: [
-     {
+    {
       label: "Home",
       href: "/",
     },
