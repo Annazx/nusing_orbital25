@@ -112,13 +112,7 @@ export const Navbar = () => {
               <Link
                 as={NextLink} // 1. Render this as a Next.js Link
                 href={item.href} // 2. Pass the href to the Next.js Link for routing
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
+                color= "foreground"
                 size="lg"
               >
                  {item.label}
