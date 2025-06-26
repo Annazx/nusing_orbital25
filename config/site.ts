@@ -26,37 +26,25 @@ export const siteConfig = {
     },
   ],
   navMenuItems: [
+     {
+      label: "Home",
+      href: "/",
+    },
+    {
+      label: "Modules",
+      href: "/modules",
+    },
+    {
+      label: "Community",
+      href: "/community",
+    },
     {
       label: "Profile",
       href: "/profile",
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      label: "Projects",
-      href: "/projects",
-    },
-    {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
+      label: "Chat",
+      href: "/chat",
     },
   ],
   links: {
