@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth, db } from "../../config/firebase";
+import Link from 'next/link';
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -69,6 +71,13 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {isLogin && (
+              <label className="label">
+                <Link href="/forgot-password" className="label-text-alt link link-hover">
+                  Forgot password?
+                </Link>
+              </label>
+            )}
           </div>
           <div className="form-control">
             <label className="label">
