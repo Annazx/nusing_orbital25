@@ -54,7 +54,7 @@ const TutorCard = ({ tutor }) => {
 
         <div className="card-actions justify-end">
           {/* The link now points to the tutor's unique ID */}
-          <Link href={`/tutors/${tutor.id}`} className="btn btn-primary">
+          <Link href={`/modules/${tutor.id}`} className="btn btn-primary">
             View Profile
           </Link>
         </div>
