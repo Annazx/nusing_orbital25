@@ -9,6 +9,8 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import AuthForm from "@/components/authform";
+import { Toaster } from 'react-hot-toast'
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -51,15 +53,14 @@ export default function RootLayout({
               <Link
                 isExternal
                 className="flex items-center gap-1 text-current"
-                href="https://heroui.com?utm_source=next-app-template"
-                title="heroui.com homepage"
               >
                 <span className="text-default-600">Orbital</span>
-                <p className="text-primary">2025 Project</p>
+                <p className="text-default-600">2025 Project</p>
               </Link>
             </footer>
           </div>
         </Providers>
+        <Toaster position="top-center"/>
       </body>
     </html>
   );
