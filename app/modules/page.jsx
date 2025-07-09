@@ -44,7 +44,7 @@ export default function ModulesPage() {
   const filteredTutors = tutors.filter(
     (tutor) =>
       tutor.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tutor.classes?.some((mod) =>
+      tutor.modules?.some((mod) =>
         mod.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
   );

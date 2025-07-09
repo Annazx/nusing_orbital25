@@ -23,7 +23,7 @@ const TutorCard = ({ tutor }) => {
           <h3 className="font-semibold">Teaches:</h3>
           <div className="flex flex-wrap gap-2 mt-1">
             {/* Use the 'classes' array */}
-            {tutor.classes?.slice(0, 3).map((cls) => (
+            {tutor.modules?.slice(0, 3).map((cls) => (
               <div key={cls} className="badge badge-outline">
                 {cls}
               </div>
