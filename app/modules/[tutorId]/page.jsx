@@ -1,19 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from "../../../config/firebase";
 import toast from 'react-hot-toast';
 
-import ReviewList from '@/components/ReviewList';
-import ReviewForm from '@/components/ReviewForm';
+import ReviewList from '../../../components/ReviewList';
+import ReviewForm from '../../../components/ReviewForm';
 
 export default function TutorProfilePage() {
-  const params = useParams(); // Gets { tutorId: '...' } from the URL
-  const { tutorId } = params;
-
+  const { tutorId } = useParams();
   const [tutor, setTutor] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +67,7 @@ export default function TutorProfilePage() {
   }
 
   if (!tutor) {
-    return <div className="text-center py-20">Tutor could not be found.</div>;
+    return <div>Loading...</div>
   }
 
   return (
@@ -78,10 +76,10 @@ export default function TutorProfilePage() {
       <div className="card lg:card-side bg-base-100 shadow-xl mb-8">
         <div className="card-body">
           <h1 className="card-title text-4xl">{tutor.name || 'Anonymous Tutor'}</h1>
-          <p className="text-2xl font-light text-primary">${tutor.preferredRate || 'N/A'}/hr</p>
-          
-          <p className="mt-4">{tutor.personalInfo || 'This tutor has not provided a biography yet.'}</p>
-
+          {/* FIX: Use 'preferredRate' field */}
+          <p className="text-2xl font-light text-primary">${tutor.preferredRate || 'N/A'}/hr</p>          
+          {/* FIX: Use 'bio' field */}
+          <p className="mt-4">{tutor.bio || 'This tutor has not provided a biography yet.'}</p>
           <div className="my-4">
             <h3 className="font-bold text-lg">Modules Taught:</h3>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -103,28 +101,10 @@ export default function TutorProfilePage() {
       <div className="divider">STUDENT REVIEWS</div>
       
       {/* Form to add a new review */}
-      <ReviewForm tutorId={tutor.id} onReviewAdded={handleReviewAdded} />
+      {/* <ReviewForm tutorId={tutor.id} onReviewAdded={handleReviewAdded} /> */}
 
       {/* List of existing reviews */}
-      <ReviewList reviews={reviews} />
-    </div>
-  );
-}
-
-export function ChatPage() {
-  const { tutorId } = useParams();
-
-  return (
-    <div className="text-center max-w-2xl mx-auto py-16">
-      <h1 className="text-4xl font-bold mb-4">Chat Room</h1>
-      <p className="text-lg mb-8">
-        This is where your real-time chat with the tutor will happen.
-      </p>
-      <div className="mockup-code">
-        <pre data-prefix="$"><code>Connecting to chat with Tutor ID:</code></pre> 
-        <pre data-prefix=">" className="text-success"><code>{tutorId}</code></pre>
-        <pre data-prefix=">" className="text-warning"><code>Chat feature is under development...</code></pre>
-      </div>
+      {/*<ReviewList reviews={reviews} /> */}
     </div>
   );
 }

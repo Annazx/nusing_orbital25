@@ -1,19 +1,19 @@
-// app/profile/page.tsx (CORRECTED)
-
+// app/profile/page.tsx (FINAL CORRECTED VERSION)
 "use client";
 
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../config/firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-// Interface for Tutor Profile Data
+// Interface for Tutor Profile Data - ALIGNED
 interface TutorProfileData {
   name: string;
   bio: string;
-  classes: string;
+  modules: string; // FIX: Changed from 'classes' to 'modules'
+  preferredRate: string;
 }
 
 export default function TutorSetupPage() {
@@ -25,28 +25,29 @@ export default function TutorSetupPage() {
   const [formData, setFormData] = useState<TutorProfileData>({
     name: "",
     bio: "",
-    classes: "",
+    modules: "", // FIX: Changed from 'classes'
+    preferredRate: "",
   });
 
   useEffect(() => {
     if (authLoading) return;
-
     if (!user) {
-      toast.error("You must be logged in to access this page.");
-      router.push("/login");
+      toast.error("You must be logged in.");
+      router.push("/login"); // Your login page
       return;
     }
 
     const fetchProfile = async () => {
-      const tutorDocRef = doc(db, "tutors", user.uid);
-      const docSnap = await getDoc(tutorDocRef);
+      const userDocRef = doc(db, "users", user.uid); // Correctly uses 'users'
+      const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
         setFormData({
           name: data.name || "",
           bio: data.bio || "",
-          classes: (data.classes || []).join(", "),
+          modules: (data.modules || []).join(", "), // FIX: Use 'modules'
+          preferredRate: data.preferredRate || "",
         });
       }
       setPageLoading(false);
@@ -55,51 +56,44 @@ export default function TutorSetupPage() {
     fetchProfile();
   }, [user, authLoading, router]);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = ( e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!user) return;
-
     setIsSubmitting(true);
-    const loadingToast = toast.loading("Saving your profile...");
+    const loadingToast = toast.loading("Saving profile...");
 
-    const tutorDocRef = doc(db, "tutors", user.uid);
+    const userDocRef = doc(db, "users", user.uid); // Correctly uses 'users'
 
+    // Data payload to be saved - ALIGNED
     const profileDataToSave = {
       name: formData.name,
       bio: formData.bio,
-      classes: formData.classes.split(",").map((c) => c.trim()).filter(Boolean),
+      modules: formData.modules.split(",").map((m) => m.trim()).filter(Boolean), // FIX: Use 'modules'
+      preferredRate: Number(formData.preferredRate) || 0,
       email: user.email,
+      role: 'tutor', // Make sure the user has the 'tutor' role
+      profileComplete: true,
     };
 
     try {
-      await setDoc(tutorDocRef, profileDataToSave, { merge: true });
-
-      const docSnap = await getDoc(tutorDocRef);
-      if (!docSnap.data()?.hasOwnProperty("rating")) {
-        await setDoc(
-          tutorDocRef,
-          {
-            rating: 0,
-            numRatings: 0,
-            createdAt: new Date(),
-          },
-          { merge: true },
-        );
+      await setDoc(userDocRef, profileDataToSave, { merge: true });
+      
+      // Initialize rating if it doesn't exist. This logic is good.
+      const docSnap = await getDoc(userDocRef);
+      if (!docSnap.data()?.hasOwnProperty("numRatings")) {
+        await setDoc(userDocRef, { rating: 0, numRatings: 0, createdAt: serverTimestamp() }, { merge: true });
       }
 
       toast.dismiss(loadingToast);
       toast.success("Profile saved successfully!");
-      router.push(`/tutors/${user.uid}`);
+      router.push(`/modules`); // FIX: Redirect to the main listing page
     } catch (error) {
       toast.dismiss(loadingToast);
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+      const errorMessage = error instanceof Error ? error.message : "Unknown error.";
       toast.error(`Failed to save profile: ${errorMessage}`);
       console.error(error);
     } finally {
@@ -108,11 +102,7 @@ export default function TutorSetupPage() {
   };
 
   if (pageLoading || authLoading) {
-    return (
-      <div className="flex justify-center items-center py-10">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <div className="flex justify-center items-center py-10"><span className="loading loading-spinner loading-lg"></span></div>;
   }
 
   return (
@@ -158,19 +148,20 @@ export default function TutorSetupPage() {
 
             {/* --- CLASSES FIELD FIX --- */}
             <div className="form-control">
-              <label htmlFor="classes" className="label"> {/* FIX: Added htmlFor="classes" */}
+              <label htmlFor="modules" className="label"> {/* FIX: Added htmlFor="classes" */}
                 <span className="label-text">Classes Taught</span>
               </label>
               <input
-                id="classes" // FIX: Added id="classes"
+                id="modules" // FIX: Added id="classes"
                 type="text"
-                name="classes"
-                placeholder="e.g., Algebra, Calculus, Physics"
+                name="modules"
+                placeholder="e.g.CS2040S, MA1521"
                 className="input input-bordered"
                 required
-                value={formData.classes}
+                value={formData.modules}
                 onChange={handleChange}
               />
+
               {/* This label is informational and doesn't need an association, so it's fine as is. */}
               <label className="label">
                 <span className="label-text-alt">
