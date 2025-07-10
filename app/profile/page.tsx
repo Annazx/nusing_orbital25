@@ -1,4 +1,3 @@
-// app/profile/page.tsx (FINAL CORRECTED VERSION)
 "use client";
 
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
@@ -8,11 +7,10 @@ import { auth, db } from "../../config/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-// Interface for Tutor Profile Data - ALIGNED
 interface TutorProfileData {
   name: string;
   bio: string;
-  modules: string; // FIX: Changed from 'classes' to 'modules'
+  modules: string; 
   preferredRate: string;
 }
 
@@ -25,7 +23,7 @@ export default function TutorSetupPage() {
   const [formData, setFormData] = useState<TutorProfileData>({
     name: "",
     bio: "",
-    modules: "", // FIX: Changed from 'classes'
+    modules: "", 
     preferredRate: "",
   });
 
@@ -33,12 +31,12 @@ export default function TutorSetupPage() {
     if (authLoading) return;
     if (!user) {
       toast.error("You must be logged in.");
-      router.push("/login"); // Your login page
+      router.push("/login"); 
       return;
     }
 
     const fetchProfile = async () => {
-      const userDocRef = doc(db, "users", user.uid); // Correctly uses 'users'
+      const userDocRef = doc(db, "users", user.uid); 
       const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
@@ -46,7 +44,7 @@ export default function TutorSetupPage() {
         setFormData({
           name: data.name || "",
           bio: data.bio || "",
-          modules: (data.modules || []).join(", "), // FIX: Use 'modules'
+          modules: (data.modules || []).join(", "), 
           preferredRate: data.preferredRate || "",
         });
       }
@@ -66,23 +64,22 @@ export default function TutorSetupPage() {
     setIsSubmitting(true);
     const loadingToast = toast.loading("Saving profile...");
 
-    const userDocRef = doc(db, "users", user.uid); // Correctly uses 'users'
+    const userDocRef = doc(db, "users", user.uid); 
 
-    // Data payload to be saved - ALIGNED
     const profileDataToSave = {
       name: formData.name,
       bio: formData.bio,
       modules: formData.modules.split(",").map((m) => m.trim()).filter(Boolean), // FIX: Use 'modules'
       preferredRate: Number(formData.preferredRate) || 0,
       email: user.email,
-      role: 'tutor', // Make sure the user has the 'tutor' role
+      role: 'tutor', 
       profileComplete: true,
     };
 
     try {
       await setDoc(userDocRef, profileDataToSave, { merge: true });
       
-      // Initialize rating if it doesn't exist. This logic is good.
+      // Initialize rating if it doesn't exist. 
       const docSnap = await getDoc(userDocRef);
       if (!docSnap.data()?.hasOwnProperty("numRatings")) {
         await setDoc(userDocRef, { rating: 0, numRatings: 0, createdAt: serverTimestamp() }, { merge: true });
@@ -113,13 +110,13 @@ export default function TutorSetupPage() {
           <p>This information will be visible to students seeking help.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-            {/* --- NAME FIELD FIX --- */}
+            {/* NAME FIELD */}
             <div className="form-control">
-              <label htmlFor="name" className="label"> {/* FIX: Added htmlFor="name" */}
+              <label htmlFor="name" className="label"> 
                 <span className="label-text">Full Name</span>
               </label>
               <input
-                id="name" // FIX: Added id="name"
+                id="name" 
                 type="text"
                 name="name"
                 placeholder="e.g., Alex Tan"
@@ -130,13 +127,13 @@ export default function TutorSetupPage() {
               />
             </div>
 
-            {/* --- BIO FIELD FIX --- */}
+            {/* BIO FIELD */}
             <div className="form-control">
-              <label htmlFor="bio" className="label"> {/* FIX: Added htmlFor="bio" */}
+              <label htmlFor="bio" className="label"> 
                 <span className="label-text">Bio</span>
               </label>
               <textarea
-                id="bio" // FIX: Added id="bio"
+                id="bio" 
                 name="bio"
                 className="textarea textarea-bordered h-24"
                 placeholder="Tell students about your teaching style, your academic achievements, and why you're a great tutor."
@@ -146,28 +143,45 @@ export default function TutorSetupPage() {
               ></textarea>
             </div>
 
-            {/* --- CLASSES FIELD FIX --- */}
+            {/* PREFERRED RATE FIELD */}
             <div className="form-control">
-              <label htmlFor="modules" className="label"> {/* FIX: Added htmlFor="classes" */}
-                <span className="label-text">Classes Taught</span>
+              <label htmlFor="preferredRate" className="label">
+                <span className="label-text">Preferred Rate ($/hr)</span>
               </label>
               <input
-                id="modules" // FIX: Added id="classes"
-                type="text"
-                name="modules"
-                placeholder="e.g.CS2040S, MA1521"
+                id="preferredRate"
+                type="number" 
+                name="preferredRate"
+                placeholder="e.g., 25"
                 className="input input-bordered"
                 required
-                value={formData.modules}
+                value={formData.preferredRate}
                 onChange={handleChange}
+                min="0" 
               />
+            </div>
 
-              {/* This label is informational and doesn't need an association, so it's fine as is. */}
-              <label className="label">
-                <span className="label-text-alt">
-                  Separate class names with a comma (,)
-                </span>
+            {/* CLASSES FIELD */}
+            <div className="form-control">
+              <label htmlFor="modules" className="label"> 
+                <span className="label-text">Modules Taught</span>
               </label>
+
+              <div className = "flex flex-col">
+                <input
+                  id="modules" 
+                  type="text"
+                  name="modules"
+                  placeholder="e.g.CS2040S, MA1521"
+                  className="input input-bordered"
+                  required
+                  value={formData.modules}
+                  onChange={handleChange}
+                />
+                <span className = "label-text-alt mt-1">
+                  Separate module names with a comma (,)
+                </span>
+              </div>
             </div>
 
             <div className="form-control mt-6">
