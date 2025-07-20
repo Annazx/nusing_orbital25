@@ -42,9 +42,7 @@ export default function TutorProfilePage() {
         setReviews(reviewsData);
 
       } catch (err) {
-        console.error(err);
-        setError('Failed to load tutor data.');
-        toast.error('Failed to load data. Please try again.');
+        console.error("Data fetching error:",err);
       } finally {
         setLoading(false);
       }
@@ -76,9 +74,7 @@ export default function TutorProfilePage() {
       <div className="card lg:card-side bg-base-100 shadow-xl mb-8">
         <div className="card-body">
           <h1 className="card-title text-4xl">{tutor.name || 'Anonymous Tutor'}</h1>
-          {/* FIX: Use 'preferredRate' field */}
           <p className="text-2xl font-light text-primary">${tutor.preferredRate || 'N/A'}/hr</p>          
-          {/* FIX: Use 'bio' field */}
           <p className="mt-4">{tutor.bio || 'This tutor has not provided a biography yet.'}</p>
           <div className="my-4">
             <h3 className="font-bold text-lg">Modules Taught:</h3>
@@ -101,10 +97,10 @@ export default function TutorProfilePage() {
       <div className="divider">STUDENT REVIEWS</div>
       
       {/* Form to add a new review */}
-      {/* <ReviewForm tutorId={tutor.id} onReviewAdded={handleReviewAdded} /> */}
+      <ReviewForm tutorId={tutor.id} onReviewAdded={handleReviewAdded} /> 
 
       {/* List of existing reviews */}
-      {/*<ReviewList reviews={reviews} /> */}
+      <ReviewList reviews={reviews} />
     </div>
   );
 }
