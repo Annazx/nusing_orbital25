@@ -1,12 +1,11 @@
-// app/tutors/page.jsx (REVISED)
 "use client";
+
 import { useState, useEffect } from "react";
-// We only need collection and getDocs from firestore now for the base query
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import TutorCard from "@/components/TutorCard";
+import TutorCard from "@/components/TutorCard"; // Use your alias or correct path
 
-export default function ModulesPage() {
+export default function TutorsPage() {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,9 +14,6 @@ export default function ModulesPage() {
     const fetchTutors = async () => {
       setLoading(true);
       try {
-        // --- CRITICAL FIX ---
-        // 1. Query the 'users' collection.
-        // 2. Add a 'where' clause to only get users with role 'tutor' and a complete profile.
         const usersCollectionRef = collection(db, "users");
         const q = query(
           usersCollectionRef, 
@@ -26,10 +22,12 @@ export default function ModulesPage() {
         );
         
         const querySnapshot = await getDocs(q);
+        
         const tutorsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // The ID will now be the User ID
+          id: doc.id,
           ...doc.data(),
         }));
+        
         setTutors(tutorsData);
       } catch (error) {
         console.error("Error fetching tutors: ", error);
@@ -40,22 +38,22 @@ export default function ModulesPage() {
     fetchTutors();
   }, []);
 
-  // Filtering logic now checks the 'modules' array
-  const filteredTutors = tutors.filter(
-    (tutor) =>
-      tutor.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tutor.modules?.some((mod) =>
-        mod.toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
-  );
+  const filteredTutors = searchTerm.trim() === ''
+    ? tutors
+    : tutors.filter(tutor =>
+        tutor.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tutor.modules?.some(mod =>
+          mod.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
 
   return (
-    <div>
+    <div className="p-4 md:p-8">
       <h1 className="text-4xl font-bold mb-6">Find Your Tutor</h1>
       <div className="mb-8">
         <input
           type="text"
-          placeholder="Search by tutor name or module (e.g., CS2040S)"
+          placeholder="Search by tutor name or module"
           className="input input-bordered w-full max-w-lg"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -63,7 +61,7 @@ export default function ModulesPage() {
       </div>
 
       {loading ? (
-        <div className="text-center">
+        <div className="text-center py-10">
           <span className="loading loading-spinner loading-lg"></span>
         </div>
       ) : (
@@ -73,7 +71,9 @@ export default function ModulesPage() {
               <TutorCard key={tutor.id} tutor={tutor} />
             ))
           ) : (
-            <p>No tutors found matching your criteria.</p>
+            <p className="col-span-full text-center text-gray-500">
+              No tutors found.
+            </p>
           )}
         </div>
       )}
