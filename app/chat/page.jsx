@@ -51,7 +51,6 @@ export default function ChatListPage() {
     // which prevents memory leaks.
     return () => unsubscribe();
 
-  // ***** THE FIX IS HERE *****
   // We depend on `user.uid` (a primitive string) instead of the `user` object.
   // This prevents an infinite loop because the string 'xyz' will always equal 'xyz',
   // whereas a user object reference can change on every render.
