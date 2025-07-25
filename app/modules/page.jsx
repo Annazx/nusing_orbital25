@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import React from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import TutorCard from "@/components/TutorCard"; // Use your alias or correct path
+import TutorCard from "@/components/TutorCard";
+import { Input, Card, CardBody, Spinner, Button} from "@heroui/react";
 
 export default function TutorsPage() {
   const [tutors, setTutors] = useState([]);
@@ -48,32 +50,43 @@ export default function TutorsPage() {
       );
 
   return (
-    <div className="p-4 md:p-8">
-      <h1 className="text-4xl font-bold mb-6">Find Your Tutor</h1>
-      <div className="mb-8">
-        <input
-          type="text"
-          placeholder="Search by tutor name or module"
-          className="input input-bordered w-full max-w-lg"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+    <div className="container mx-auto px-6 py-10 max-w-6xl">
+      <h1 className="text-4xl font-bold mb-6 text-center">Find Your Tutor</h1>
+      <Card className="mb-8 shadow-sm">
+        <CardBody className = "flex justify-center p-4"> 
+         <Input
+         isClearable
+         type="text"
+         placeholder="Search by tutor name or module"
+         className="max-w"
+         value={searchTerm}
+         onChange={(e) => setSearchTerm(e.target.value)} 
+          />
+          </CardBody>
+        </Card>
 
       {loading ? (
-        <div className="text-center py-10">
-          <span className="loading loading-spinner loading-lg"></span>
+        <div className="flex justify-center items-center h-64">
+          <Spinner size="lg" color="primary" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
           {filteredTutors.length > 0 ? (
             filteredTutors.map((tutor) => (
               <TutorCard key={tutor.id} tutor={tutor} />
             ))
           ) : (
-            <p className="col-span-full text-center text-gray-500">
-              No tutors found.
-            </p>
+            <div className="col-span-full text-center text-gray-500 py-16">
+              <p className="text-xl font-semibold mb-2">No tutors found.</p>
+              <p className="mb-4"> Try adjusting your search criteria.</p>
+              <Button
+                color="primary"
+                variant="flat"
+                onPress={() => setSearchTerm("")}
+              >
+                Reset Search
+              </Button>
+            </div>
           )}
         </div>
       )}

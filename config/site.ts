@@ -13,10 +13,6 @@ export const siteConfig = {
       href: "/modules",
     },
     {
-      label: "Community",
-      href: "/community",
-    },
-    {
       label: "Profile",
       href: "/profile",
     },
@@ -33,10 +29,6 @@ export const siteConfig = {
     {
       label: "Modules",
       href: "/modules",
-    },
-    {
-      label: "Community",
-      href: "/community",
     },
     {
       label: "Profile",
