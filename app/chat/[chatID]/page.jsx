@@ -33,45 +33,48 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // This is the robust, single useEffect that handles everything correctly.
   useEffect(() => {
-    if (authLoading || !user) return;
-    if (!chatId) return;
+    // Wait until we have all the necessary information.
+    if (!user || !chatId || authLoading) {
+      return;
+    }
 
+    // Listener for Chat Metadata and Permissions
     const chatDocRef = doc(db, 'chats', chatId);
-    const unsubscribeChatDoc = onSnapshot(chatDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const chatData = docSnap.data();
-        if (chatData.participantIds.includes(user.uid)) {
-          setChatInfo(chatData);
-        } else {
-          console.error("Access Denied: User is not a participant.");
-          router.push('/chat');
-        }
+    const unsubscribeChat = onSnapshot(chatDocRef, (docSnap) => {
+      if (docSnap.exists() && docSnap.data().participantIds.includes(user.uid)) {
+        setChatInfo(docSnap.data());
+      } else {
+        console.error("Access Denied or Chat Not Found. Redirecting...");
+        router.push('/chat');
       }
     });
 
+    // Listener for Messages
     const messagesRef = collection(db, 'chats', chatId, 'messages');
     const q = query(messagesRef, orderBy('createdAt', 'asc'));
     const unsubscribeMessages = onSnapshot(q, (querySnapshot) => {
       const msgs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setMessages(msgs);
-      setLoading(false);
+      setLoading(false); // We are now ready to show the page content.
     });
 
+    // Cleanup function to prevent memory leaks
     return () => {
-      unsubscribeChatDoc();
+      unsubscribeChat();
       unsubscribeMessages();
     };
 
-  }, [user?.uid, chatId, authLoading, router]);
+    // Stable dependencies prevent infinite loops.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.uid, chatId, authLoading]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() === '' || !user) return;
-
     const messagesRef = collection(db, 'chats', chatId, 'messages');
     const chatRef = doc(db, 'chats', chatId);
-
     try {
       await addDoc(messagesRef, { text: newMessage, senderId: user.uid, createdAt: serverTimestamp() });
       await updateDoc(chatRef, {
@@ -85,19 +88,21 @@ export default function ChatPage() {
   };
   
   const getOtherParticipantName = () => {
-    if (!chatInfo || !user) return "Loading Chat...";
+    if (!chatInfo) return "Loading...";
     const otherId = chatInfo.participantIds.find(id => id !== user.uid);
-    return chatInfo.participantInfo[otherId]?.name || "Tutor";
+    return chatInfo.participantInfo?.[otherId]?.name || "Tutor";
   };
 
-  if (loading || authLoading || !chatInfo) {
+  // Guard to show a loading spinner until everything is ready.
+  if (loading || authLoading) {
     return (
-        <div className="flex justify-center items-center h-screen">
-            <span className="loading loading-spinner loading-lg"></span>
-        </div>
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
     );
   }
 
+  // The real Chat UI
   return (
     <div className="flex flex-col h-[calc(100vh-80px)] max-w-4xl mx-auto bg-base-100 shadow-lg rounded-lg">
       <div className="p-4 border-b-2 border-base-300">
