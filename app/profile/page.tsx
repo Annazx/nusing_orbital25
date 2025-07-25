@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../config/firebase";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
+
+import { Form, Input, Textarea, Button } from "@heroui/react";
 
 interface TutorProfileData {
   name: string;
@@ -54,8 +57,8 @@ export default function TutorSetupPage() {
     fetchProfile();
   }, [user, authLoading, router]);
 
-  const handleChange = ( e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleValueChange = (name: keyof TutorProfileData) => (value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -69,7 +72,7 @@ export default function TutorSetupPage() {
     const profileDataToSave = {
       name: formData.name,
       bio: formData.bio,
-      modules: formData.modules.split(",").map((m) => m.trim()).filter(Boolean), // FIX: Use 'modules'
+      modules: formData.modules.split(",").map((m) => m.trim()).filter(Boolean), 
       preferredRate: Number(formData.preferredRate) || 0,
       email: user.email,
       role: 'tutor', 
@@ -87,7 +90,7 @@ export default function TutorSetupPage() {
 
       toast.dismiss(loadingToast);
       toast.success("Profile saved successfully!");
-      router.push(`/modules`); // FIX: Redirect to the main listing page
+      router.push(`/modules`); 
     } catch (error) {
       toast.dismiss(loadingToast);
       const errorMessage = error instanceof Error ? error.message : "Unknown error.";
@@ -99,105 +102,76 @@ export default function TutorSetupPage() {
   };
 
   if (pageLoading || authLoading) {
-    return <div className="flex justify-center items-center py-10"><span className="loading loading-spinner loading-lg"></span></div>;
+    return <div className="flex justify-center items-center py-5"><span className="loading loading-spinner loading-lg"></span></div>;
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-lg mx-auto">
       <div className="card bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h1 className="card-title text-3xl">Your Tutor Profile</h1>
-          <p>This information will be visible to students seeking help.</p>
+        <div className="card-body text-center p-8">
+          <h1 className="card-title text-3xl font-bold justify-center">Your Tutor Profile</h1>
+          <p className = "text-base-content/70 mb-4">This information will be visible to students seeking help.</p>
 
-          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+          <Form onSubmit={handleSubmit} className="flex gap-10 justify-center items-center">
             {/* NAME FIELD */}
-            <div className="form-control">
-              <label htmlFor="name" className="label"> 
-                <span className="label-text">Full Name</span>
-              </label>
-              <input
-                id="name" 
-                type="text"
-                name="name"
-                placeholder="e.g., Alex Tan"
-                className="input input-bordered"
-                required
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
+            <Input
+              isRequired
+              label="Full Name"
+              labelPlacement = "outside-top"
+              name="name"
+              placeholder="e.g., Alex Tan"
+              radius={"sm"}
+              value={formData.name}
+              onValueChange={handleValueChange("name")}
+            />
 
             {/* BIO FIELD */}
-            <div className="form-control">
-              <label htmlFor="bio" className="label"> 
-                <span className="label-text">Bio</span>
-              </label>
-              <textarea
-                id="bio" 
-                name="bio"
-                className="textarea textarea-bordered h-24"
-                placeholder="Tell students about your teaching style, your academic achievements, and why you're a great tutor."
-                required
-                value={formData.bio}
-                onChange={handleChange}
-              ></textarea>
-            </div>
+            <Textarea
+              isRequired
+              label="Bio"
+              labelPlacement = "outside-top"
+              name="bio"
+              placeholder="Tell students about your teaching style, your academic achievements, and why you're a great tutor."
+              radius={"sm"}
+              value={formData.bio}
+              onValueChange={handleValueChange("bio")}
+            />
 
             {/* PREFERRED RATE FIELD */}
-            <div className="form-control">
-              <label htmlFor="preferredRate" className="label">
-                <span className="label-text">Preferred Rate ($/hr)</span>
-              </label>
-              <input
-                id="preferredRate"
-                type="number" 
-                name="preferredRate"
-                placeholder="e.g., 25"
-                className="input input-bordered"
-                required
-                value={formData.preferredRate}
-                onChange={handleChange}
-                min="0" 
-              />
-            </div>
+            <Input
+              isRequired
+              label="Preferred Rate ($/hr)"
+              labelPlacement = "outside-top"
+              name="preferredRate"
+              placeholder="e.g., 25"
+              radius={"sm"}
+              type="number"
+              min="0"
+              value={formData.preferredRate}
+              onValueChange={handleValueChange("preferredRate")}
+            />
 
-            {/* CLASSES FIELD */}
-            <div className="form-control">
-              <label htmlFor="modules" className="label"> 
-                <span className="label-text">Modules Taught</span>
-              </label>
-
-              <div className = "flex flex-col">
-                <input
-                  id="modules" 
-                  type="text"
-                  name="modules"
-                  placeholder="e.g.CS2040S, MA1521"
-                  className="input input-bordered"
-                  required
-                  value={formData.modules}
-                  onChange={handleChange}
-                />
-                <span className = "label-text-alt mt-1">
-                  Separate module names with a comma (,)
-                </span>
-              </div>
-            </div>
-
-            <div className="form-control mt-6">
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <span className="loading loading-spinner"></span>
-                ) : (
-                  "Save Profile"
-                )}
-              </button>
-            </div>
-          </form>
+            {/* MODULES FIELD */}
+             <Input
+              isRequired
+              label="Modules Taught"
+              labelPlacement = "outside-top"
+              name="modules"
+              placeholder="e.g. CS2040S, MA1521"
+              radius={"sm"}
+              description="Separate module names with a comma (,)"
+              value={formData.modules}
+              onValueChange={handleValueChange("modules")}
+            />
+            
+            <Button
+              color="primary"
+              type="submit"
+              isLoading={isSubmitting} // Use the isLoading prop for the loading state
+            >
+              {isSubmitting ? "Saving..." : "Save Profile"}
+            </Button>
+          </Form>
         </div>
       </div>
     </div>
