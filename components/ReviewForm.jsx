@@ -1,4 +1,7 @@
 'use client';
+import React from "react";
+import { Card, CardBody, Textarea, Button, RadioGroup, Radio } from "@heroui/react";
+import { Icon } from "@iconify/react";
 import { useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db, auth } from "@/config/firebase";
@@ -55,39 +58,52 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
   };
 
   return (
-    <div className="my-6 p-6 card bg-base-200 shadow">
-      <h3 className="text-xl font-bold mb-4">Leave a Review</h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="label">Rating</label>
-          <div className="rating rating-lg">
-            {[1, 2, 3, 4, 5].map(star => (
-              <input 
-                key={star} 
-                type="radio" 
-                name="rating-9" 
-                className="mask mask-star-2 bg-orange-400"
-                value={star}
-                checked={rating === star}
-                onChange={(e) => setRating(parseInt(e.target.value))}
-              />
-            ))}
+    <Card className="my-6 shadow-sm">
+      <CardBody>
+        <h3 className="text-xl font-bold mb-4">Leave a Review</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block test-sm font-medium mb-2">Rating</label>
+            <RadioGroup
+            orientation="horizontal"
+            value={rating}
+            onValueChange={setRating}
+            >
+              {[1,2,3,4,5].map(star => (
+                <Radio
+                key={star}
+                value={star.toString()}
+                className="inline-flex items-center mr-4"
+                >
+                  {({isSelected}) => (
+                    <Icon
+                    icon={isSelected ? "lucide:star-full":"lucide:star"}
+                    className={isSelected ? "text-warning":"text-default-300"}
+                    width={24}
+                    height={24}
+                    />
+                  )}
+                </Radio>
+              ))}
+            </RadioGroup>
           </div>
-        </div>
-        <div>
-          <label className="label">Comment</label>
-          <textarea 
-            className="textarea textarea-bordered w-full h-24" 
+          <Textarea
+            label="Comment"
             placeholder="Share your experience with this tutor..."
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting...' : 'Submit Review'}
-        </button>
-      </form>
-    </div>
+            onValueChange={setComment}
+            minRows={3}
+            isRequired
+          />
+          <Button
+            type="submit"
+            color="primary"
+            isLoading={isSubmitting}
+          >
+            {isSubmitting ? 'Submitting...':'Submit Review'}
+          </Button>
+        </form>
+      </CardBody>
+    </Card>
   );
 }
