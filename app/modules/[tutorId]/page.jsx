@@ -8,6 +8,8 @@ import { db } from "../../../config/firebase";
 import toast from 'react-hot-toast';
 import { Card, CardBody, CardHeader, Avatar, Chip, Button, Divider, Spinner } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import ChatButton from "../../../components/ChatButton"; 
+
 
 import ReviewList from '../../../components/ReviewList';
 import ReviewForm from '../../../components/ReviewForm';
@@ -95,14 +97,7 @@ export default function TutorProfilePage() {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button
-              color="primary"
-              endContent={<Icon icon="lucide:message-circle" />}
-              as="a"
-              href={`/chat/${tutor.id}`}
-            >
-              Chat with {tutor.name.split(' ')[0]}
-            </Button>
+            <ChatButton tutorId={tutor.id} tutorName={tutor.name} />
           </div> 
         </CardBody>
       </Card>

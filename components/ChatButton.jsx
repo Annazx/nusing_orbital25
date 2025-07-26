@@ -5,6 +5,8 @@ import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../config/firebase"; 
 import useAuth from "../hooks/useAuth";
 import { Button } from "@heroui/react"; 
+import { Icon } from "@iconify/react";
+
 
 export default function ChatButton({ tutorId, tutorName }) {
   const { user, loading } = useAuth();
@@ -41,7 +43,11 @@ export default function ChatButton({ tutorId, tutorName }) {
   }
 
   return (
-    <Button className="btn btn-primary" onClick={handleStartChat}>
+    <Button
+      color="primary"
+      endContent={<Icon icon="lucide:message-circle"/>}
+      as="a" 
+      onClick={handleStartChat}>
       Chat
     </Button>
   );
