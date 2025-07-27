@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardBody, Textarea, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useState } from 'react';
-import { collection, addDoc, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc, runTransaction } from 'firebase/firestore';
 import { db, auth } from "@/config/firebase";
 import toast from 'react-hot-toast';
 
@@ -32,13 +32,28 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
     const loadingToast = toast.loading("Submitting your review...");
 
     try {
-      const userDocRef = doc(db, 'users', currentUser.uid);
-      const userDocSnap = await getDoc(userDocRef);
-      
-      let authorName = 'Anonymous Student'; 
-      if (userDocSnap.exists()) {
-        authorName = userDocSnap.data().name || 'Anonymous Student';
-      }
+      await runTransaction(db, async (transaction) => {
+        const userDocRef = doc(db, 'users', currentUser.uid);
+        const tutorDocRef = doc(db, 'users', tutorId);
+        const userDocSnap = await getDoc(userDocRef);
+        let authorName = 'Anonymous Student'; 
+        if (userDocSnap.exists()) {
+          authorName = userDocSnap.data().name || 'Anonymous Student';
+        }
+        const newReviewRef = doc(collection(db, 'reviews'));
+        const tutorDoc = await transaction.get(tutorDocRef);
+        if (!tutorDoc.exists()) {
+          throw "Tutor document does not exist!";
+        }
+
+        const currentData = tutorDoc.data();
+        const newNumRatings = (currentData.numRatings || 0) + 1;
+        const newTotalRating = (currentData.rating || 0) + Number(rating);
+        
+        transaction.update(tutorDocRef, {
+          numRatings: newNumRatings,
+          rating: newTotalRating,
+        });
 
       const newReviewData = {
         tutorId: tutorId,
@@ -48,11 +63,10 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
         rating: Number(rating),
         createdAt: serverTimestamp(),
       };
-      
-      const docRef = await addDoc(collection(db, 'reviews'), newReviewData);
-      
-      // Optimistically update the UI
-      onReviewAdded({ id: docRef.id, ...newReviewData, createdAt: new Date() });
+      transaction.set(newReviewRef, newReviewData);
+
+      onReviewAdded({id:newReviewRef.id,...newReviewData, createdAt: new Date() });
+    });
 
       toast.dismiss(loadingToast);
       toast.success("Review submitted successfully!");
