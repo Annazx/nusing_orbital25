@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import { Card, CardBody, Textarea, Button, RadioGroup, Radio } from "@heroui/react";
+import { Card, CardBody, Textarea, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -11,6 +11,8 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
       const newReviewData = {
         tutorId: tutorId,
         authorId: currentUser.uid,
-        authorName: 'Anonymous Student',
+        authorName: currentUser.displayName,
         comment: comment,
         rating: Number(rating),
         createdAt: serverTimestamp(),
@@ -42,7 +44,7 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
       const docRef = await addDoc(collection(db, 'reviews'), newReviewData);
       
       // Optimistically update the UI
-      onReviewAdded({ id: docRef.id, ...newReviewData });
+      onReviewAdded({ id: docRef.id, ...newReviewData, createdAt: new Date() });
 
       toast.dismiss(loadingToast);
       toast.success("Review submitted successfully!");
@@ -61,31 +63,32 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
     <Card className="my-6 shadow-sm">
       <CardBody>
         <h3 className="text-xl font-bold mb-4">Leave a Review</h3>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block test-sm font-medium mb-2">Rating</label>
-            <RadioGroup
-            orientation="horizontal"
-            value={rating}
-            onValueChange={setRating}
-            >
-              {[1,2,3,4,5].map(star => (
-                <Radio
-                key={star}
-                value={star.toString()}
-                className="inline-flex items-center mr-4"
-                >
-                  {({isSelected}) => (
-                    <Icon
-                    icon={isSelected ? "lucide:star-full":"lucide:star"}
-                    className={isSelected ? "text-warning":"text-default-300"}
-                    width={24}
-                    height={24}
+            <div className="flex items-center space-x-1">
+              {[1, 2, 3, 4, 5].map((star) => {
+                const isFilled = (hoverRating || rating) >= star;
+                return (
+                  <Button
+                    key={star}
+                    type="button" // Important to prevent form submission
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className="p-1 focus:outline-none focus:ring-2 focus:ring-warning focus:ring-offset-2 rounded-full"
+                    aria-label={`Rate ${star} out of 5 stars`}
+                  >
+                  <Icon
+                      icon={isFilled ? "lucide:star" : "lucide:star"}
+                      className={`h-7 w-7 transition-colors ${
+                        isFilled ? "text-warning" : "text-default-300"
+                      }`}
                     />
-                  )}
-                </Radio>
-              ))}
-            </RadioGroup>
+                </Button>
+              );
+            })}
+          </div>
           </div>
           <Textarea
             label="Comment"
@@ -99,6 +102,7 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
             type="submit"
             color="primary"
             isLoading={isSubmitting}
+            className="w-full"
           >
             {isSubmitting ? 'Submitting...':'Submit Review'}
           </Button>
