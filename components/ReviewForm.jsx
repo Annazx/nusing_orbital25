@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardBody, Textarea, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useState } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 import { db, auth } from "@/config/firebase";
 import toast from 'react-hot-toast';
 
@@ -32,10 +32,18 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
     const loadingToast = toast.loading("Submitting your review...");
 
     try {
+      const userDocRef = doc(db, 'users', currentUser.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      
+      let authorName = 'Anonymous Student'; 
+      if (userDocSnap.exists()) {
+        authorName = userDocSnap.data().name || 'Anonymous Student';
+      }
+
       const newReviewData = {
         tutorId: tutorId,
         authorId: currentUser.uid,
-        authorName: currentUser.displayName,
+        authorName: authorName,
         comment: comment,
         rating: Number(rating),
         createdAt: serverTimestamp(),
@@ -72,7 +80,7 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
                 return (
                   <Button
                     key={star}
-                    type="button" // Important to prevent form submission
+                    type="button" 
                     onClick={() => setRating(star)}
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
