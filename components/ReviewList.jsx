@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, Avatar, Divider } from "@heroui/react";
+import { Card, CardBody, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 const StarRating = ({ rating }) => {
@@ -8,15 +8,16 @@ const StarRating = ({ rating }) => {
       {[...Array(5)].map((_, i) => (
         <Icon
           key={i}
-          icon={i < rating ? "lucide:star-full" : "lucide:star"}
-          className={i < rating ? "text-warning" : "text-default-300"}
-          width={20}
-          height={20}
+          icon="material-symbols:star" 
+          className={`h-5 w-5 transition-colors ${
+            i < rating ? "text-warning" : "text-default-300"
+          }`}
         />
       ))}
     </div>
   );
 };
+
 
 export default function ReviewList({ reviews }) {
   if (!reviews || reviews.length === 0) {
@@ -38,12 +39,19 @@ export default function ReviewList({ reviews }) {
               <div className="flex items-center gap-2">
                 <span className="font-semibold">{review.authorName} </span>
               </div>
-              <StarRating rating={review.rating} />
             </div>
-            <p className="mt-2 text-default-600">{review.comment}</p>
             <p className="text-xs text-default-400 text-right">
               {review.createdAt ? new Date(review.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}
             </p>
+            <div className="flex items-center gap-2">
+              {/* 1. Display the numeric rating, formatted to one decimal place */}
+              <span className="font-bold text-lg text-default-700">
+                {Number(review.rating).toFixed(1)}
+              </span>
+              {/* 2. Display the star rating component */}
+                <StarRating rating={review.rating} />
+            </div>
+            <p className="mt-2 text-default-600">{review.comment}</p>
           </CardBody>         
         </Card>
       ))}
