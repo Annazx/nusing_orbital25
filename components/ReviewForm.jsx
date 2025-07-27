@@ -102,7 +102,7 @@ export default function ReviewForm({ tutorId, onReviewAdded }) {
                     aria-label={`Rate ${star} out of 5 stars`}
                   >
                   <Icon
-                      icon={isFilled ? "lucide:star" : "lucide:star"}
+                      icon={isFilled ? "solar:star-bold" : "solar:star-bold"}
                       className={`h-7 w-7 transition-colors ${
                         isFilled ? "text-warning" : "text-default-300"
                       }`}

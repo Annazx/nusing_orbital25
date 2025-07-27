@@ -35,7 +35,7 @@ const TutorCard = ({ tutor }) => {
             {[1, 2, 3, 4, 5].map((star) => (
             <Icon
               key={star}
-              icon={star <= starRating ? "lucide:star-full" : "lucide:star"}
+              icon={star <= starRating ? "solar:star-bold" : "solar:star-bold"}
               className={star <= starRating ? "text-warning" : "text-default-300"}
               width={20}
               height={20}
