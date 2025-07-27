@@ -6,7 +6,6 @@ import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, u
 import { db } from '../../../config/firebase';
 import useAuth from '../../../hooks/useAuth';
 
-// --- UPGRADED ChatMessage COMPONENT ---
 const ChatMessage = ({ message, isCurrentUser, senderName, messageTime }) => {
   const messageClass = isCurrentUser ? 'chat-end' : 'chat-start';
   const bubbleClass = isCurrentUser ? 'chat-bubble-primary' : 'chat-bubble';
@@ -14,10 +13,7 @@ const ChatMessage = ({ message, isCurrentUser, senderName, messageTime }) => {
   return (
     <div className={`chat ${messageClass}`}>
       <div className="chat-header">
-        {/* We only show the sender's name if it's NOT the current user */}
-        {!isCurrentUser && (
-          <span className="text-xs font-bold mr-2">{senderName}</span>
-        )}
+        <span className="text-xs font-bold mr-2">{senderName}</span>
         <time className="text-xs opacity-50">{messageTime}</time>
       </div>
       <div className={`chat-bubble ${bubbleClass}`}>{message.text}</div>
