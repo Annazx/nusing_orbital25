@@ -10,7 +10,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -35,14 +35,13 @@ export default function LoginPage() {
           password,
         );
         const user = userCredential.user;
-        // Create user profile in Firestore
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
           role: role,
           createdAt: new Date(),
         });
         toast.success("Account created! Please set up your profile.");
-        router.push("/profile"); // Redirect to profile setup
+        router.push("/profile");
       }
       toast.dismiss(loadingToast);
     } catch (error) {
@@ -51,93 +50,83 @@ export default function LoginPage() {
     }
   };
 
+  // The JSX is now structured based on a common HeroUI authentication form template
   return (
-    <div className="flex justify-center items-center">
-      <div className="card w-full max-w-sm shadow-2xl bg-base-100">
-        <form className="card-body" onSubmit={handleSubmit}>
-          <h2 className="card-title text-center text-2xl">
-            {isLogin ? "Login" : "Sign Up"}
-          </h2>
-
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              type="email"
-              placeholder="email@u.nus.edu"
-              className="input input-bordered"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {isLogin && (
-              <label className="label">
-                <Link href="/forgot-password" className="label-text-alt link link-hover">
-                  Forgot password?
-                </Link>
-              </label>
-            )}
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              type="password"
-              placeholder="password"
-              className="input input-bordered"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          {!isLogin && (
-            <div className="form-control mt-4">
-              <label className="label cursor-pointer">
-                <span className="label-text">I want to be a Student</span>
+    <section className="bg-base-200">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
+        <div className="w-full bg-base-100 rounded-lg shadow-xl md:mt-0 sm:max-w-md xl:p-0">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-base-content md:text-2xl">
+              {isLogin ? "Sign in to your account" : "Create an account"}
+            </h1>
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-base-content">Your email</label>
                 <input
-                  type="radio"
-                  name="role"
-                  className="radio checked:bg-blue-500"
-                  value="student"
-                  checked={role === "student"}
-                  onChange={() => setRole("student")}
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="input input-bordered w-full"
+                  placeholder="name@company.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-              </label>
-              <label className="label cursor-pointer">
-                <span className="label-text">I want to be a Tutor</span>
+              </div>
+              <div>
+                <label htmlFor="password" className="block mb-2 text-sm font-medium text-base-content">Password</label>
                 <input
-                  type="radio"
-                  name="role"
-                  className="radio checked:bg-green-500"
-                  value="tutor"
-                  checked={role === "tutor"}
-                  onChange={() => setRole("tutor")}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="input input-bordered w-full"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
-              </label>
-            </div>
-          )}
+              </div>
 
-          <div className="form-control mt-6">
-            <button type="submit" className="btn btn-primary">
-              {isLogin ? "Login" : "Sign Up"}
-            </button>
+              {!isLogin && (
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-base-content">I am joining as a</label>
+                  <div className="join w-full">
+                    <button type="button" onClick={() => setRole('student')} className={`join-item btn btn-outline w-1/2 ${role === 'student' ? 'btn-active' : ''}`}>
+                      Student
+                    </button>
+                    <button type="button" onClick={() => setRole('tutor')} className={`join-item btn btn-outline w-1/2 ${role === 'tutor' ? 'btn-active' : ''}`}>
+                      Tutor
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {isLogin && (
+                <div className="flex items-center justify-end">
+                  <Link href="/forgot-password" className="text-sm font-medium link link-primary hover:underline">
+                    Forgot password?
+                  </Link>
+                </div>
+              )}
+              
+              <button type="submit" className="btn btn-primary w-full">
+                {isLogin ? "Sign in" : "Create an account"}
+              </button>
+              
+              <p className="text-sm font-light text-base-content/70">
+                {isLogin ? "Don’t have an account yet? " : "Already have an account? "}
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="font-medium link link-primary hover:underline"
+                >
+                  {isLogin ? "Sign up" : "Sign in"}
+                </button>
+              </p>
+            </form>
           </div>
-          <p className="text-center mt-4">
-            <a
-              href="#"
-              className="link link-hover"
-              onClick={() => setIsLogin(!isLogin)}
-            >
-              {isLogin
-                ? "Don't have an account? Sign Up"
-                : "Already have an account? Login"}
-            </a>
-          </p>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
