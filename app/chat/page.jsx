@@ -1,10 +1,13 @@
 "use client";
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import useAuth from '../../hooks/useAuth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Card, CardBody, Spinner, Button } from "@heroui/react";
+import { Icon } from "@iconify/react";
 
 export default function ChatListPage() {
   const { user, loading: authLoading } = useAuth();
@@ -60,8 +63,16 @@ export default function ChatListPage() {
   if (authLoading || loading) {
     return (
         <div className="flex justify-center items-center h-screen">
-            <span className="loading loading-spinner loading-lg"></span>
-        </div>
+        <Spinner size="lg" color="primary" />
+      </div>
+    );
+  }
+
+   if (authLoading || loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner size="lg" color="primary" />
+      </div>
     );
   }
 
@@ -83,12 +94,17 @@ export default function ChatListPage() {
 
             return (
               <Link key={chat.id} href={`/chat/${chat.id}`} className="block">
-                <div className="p-4 bg-base-200 rounded-lg hover:bg-base-300 transition-colors cursor-pointer">
-                  <h3 className="font-bold text-lg">{otherUser.name || "Tutor"}</h3>
-                  <p className="text-gray-500 truncate italic">
-                    {chat.lastMessage?.text || "Click to start the conversation."}
-                  </p>
-                </div>
+                <Card isPressable className="shadow-sm hover:bg-neutral-focus transition-colors">
+                  <CardBody className="flex items-center gap-4">
+                    <div className="flex-grow">
+                      <h3 className="font-semibold text-lg">{otherUser.name || "Tutor"}</h3>
+                      <p className="text-small text-default-500 truncate">
+                        {chat.lastMessage?.text || "Click to start the conversation."}
+                      </p>
+                    </div>
+                    <Icon icon="lucide:chevron-right" className="text-default-400" width={24} height={24} />
+                  </CardBody>
+                </Card>
               </Link>
             );
           })

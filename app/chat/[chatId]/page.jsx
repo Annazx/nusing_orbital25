@@ -1,22 +1,23 @@
 "use client";
-
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../config/firebase';
 import useAuth from '../../../hooks/useAuth';
+import { Card, CardBody, CardHeader, Input, Button, Spinner } from "@heroui/react";
+import { Icon } from "@iconify/react";
 
 const ChatMessage = ({ message, isCurrentUser, senderName, messageTime }) => {
-  const messageClass = isCurrentUser ? 'chat-end' : 'chat-start';
-  const bubbleClass = isCurrentUser ? 'chat-bubble-primary' : 'chat-bubble';
-
   return (
-    <div className={`chat ${messageClass}`}>
-      <div className="chat-header">
-        <span className="text-xs font-bold mr-2">{senderName}</span>
-        <time className="text-xs opacity-50">{messageTime}</time>
+    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-4`}>
+      <div className={`max-w-[70%] ${isCurrentUser ? 'bg-primary-100 text-primary-800' : 'bg-default-100 text-default-800'} rounded-lg p-3`}>
+        <div className="flex justify-between items-center mb-1">
+          <span className="text-xs font-semibold">{senderName}</span>
+          <time className="text-xs text-default-400">{messageTime}</time>
+        </div>
+        <p>{message.text}</p>
       </div>
-      <div className={`chat-bubble ${bubbleClass}`}>{message.text}</div>
     </div>
   );
 };
@@ -93,42 +94,57 @@ export default function ChatPage() {
   if (loading || authLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg"></span>
+        <Spinner size="lg" color="primary" />
       </div>
     );
   }
-
+  const otherParticipant = getParticipantInfo(chatInfo?.participantIds.find(id => id !== user.uid));
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] max-w-4xl mx-auto bg-base-100 shadow-lg rounded-lg">
-      <div className="p-4 border-b-2 border-base-300">
-        <h2 className="text-xl font-bold text-center">
-          {/* We can use our helper here too for the header */}
-          {getParticipantInfo(chatInfo?.participantIds.find(id => id !== user.uid)).name}
-        </h2>
-      </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* ***** THE FIX IS HERE: We pass down more props ***** */}
-        {messages.map(msg => {
-          const sender = getParticipantInfo(msg.senderId);
-          // Format the timestamp into a readable time string
-          const messageTime = msg.createdAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || "";
-          
-          return (
-            <ChatMessage 
-              key={msg.id} 
-              message={msg} 
-              isCurrentUser={msg.senderId === user.uid}
-              senderName={sender.name}
-              messageTime={messageTime}
-            />
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </div>
-      <form onSubmit={handleSendMessage} className="p-4 border-t-2 border-base-300 flex gap-2">
-        <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type a message..." className="input input-bordered flex-1" autoComplete="off"/>
-        <button type="submit" className="btn btn-primary" disabled={!newMessage.trim()}>Send</button>
-      </form>
-    </div>
+    <Card className="h-[calc(100vh-80px)] max-w-4xl mx-auto shadow-lg">
+      <CardHeader className="flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-bold">{otherParticipant.name}</h2>
+        </div>
+      </CardHeader>
+      <CardBody className="flex flex-col p-0">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {messages.map(msg => {
+            const sender = getParticipantInfo(msg.senderId);
+            const messageTime = msg.createdAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || "";
+            
+            return (
+              <ChatMessage 
+                key={msg.id} 
+                message={msg} 
+                isCurrentUser={msg.senderId === user.uid}
+                senderName={sender.name}
+                messageTime={messageTime}
+              />
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+        <form onSubmit={handleSendMessage} className="p-4 border-t border-default-200 flex gap-2">
+          <Input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+            className="flex-1"
+            autoComplete="off"
+            endContent={
+              <Button
+                isIconOnly
+                color="primary"
+                type="submit"
+                disabled={!newMessage.trim()}
+              >
+                <Icon icon="lucide:send" width={20} height={20} />
+              </Button>
+            }
+          />
+        </form>
+      </CardBody>
+    </Card>
   );
 }
