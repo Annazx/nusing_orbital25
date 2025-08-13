@@ -27,8 +27,6 @@ export default function ChatListPage() {
       return;
     }
 
-    // This is the Firestore query to get all chats for the current user,
-    // sorted by the most recently updated.
     const chatsRef = collection(db, 'chats');
     const q = query(
       chatsRef, 
@@ -36,7 +34,6 @@ export default function ChatListPage() {
       orderBy('updatedAt', 'desc')
     );
 
-    // onSnapshot creates a real-time listener.
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const chatsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -45,18 +42,12 @@ export default function ChatListPage() {
       setChats(chatsData);
       setLoading(false);
     }, (error) => {
-      // It's good practice to handle potential errors.
       console.error("Error fetching chats: ", error);
       setLoading(false);
     });
 
-    // This cleanup function is called when the component unmounts,
-    // which prevents memory leaks.
     return () => unsubscribe();
 
-  // We depend on `user.uid` (a primitive string) instead of the `user` object.
-  // This prevents an infinite loop because the string 'xyz' will always equal 'xyz',
-  // whereas a user object reference can change on every render.
   }, [user?.uid, authLoading, router]);
 
   // Display a loading spinner while waiting for auth or data.

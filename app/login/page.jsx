@@ -1,5 +1,4 @@
 "use client";
-// app/(auth)/login/page.jsx
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth, db } from "../../config/firebase";
@@ -16,7 +15,7 @@ export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("student"); // 'student' or 'tutor'
+  const [role, setRole] = useState("student"); 
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -49,8 +48,6 @@ export default function LoginPage() {
       toast.error(error.message.replace("Firebase: ", ""));
     }
   };
-
-  // The JSX is now structured based on a common HeroUI authentication form template
   return (
     <section className="bg-base-200">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">

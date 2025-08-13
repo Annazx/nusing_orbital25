@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '@/config/firebase'; // Adjust path if your config is elsewhere
+import { auth } from '@/config/firebase'; 
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 
@@ -22,11 +22,9 @@ export default function ForgotPasswordPage() {
         'If an account exists for this email, a reset link has been sent.',
         { duration: 5000 } // Show message for longer
       );
-      setEmail(''); // Clear the input field on success
+      setEmail(''); 
     } catch (error: any) {
       toast.dismiss(loadingToast);
-      // We show a generic message for security to avoid user enumeration
-      // but you can log the specific error for debugging.
       console.error("Password reset error:", error);
       toast.error('Failed to send reset link. Please try again.');
     } finally {

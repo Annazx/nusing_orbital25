@@ -1,7 +1,5 @@
-// components/AuthForm.tsx (or whatever you call your login/signup component)
 "use client";
 import React, { useState } from "react";
-// Import the specific authentication functions you need
 import {
   createUserWithEmailAndPassword, // To register new users
   signInWithEmailAndPassword, // To sign in existing users
@@ -9,18 +7,14 @@ import {
   signOut, // To sign users out
 } from "firebase/auth";
 
-// Import the 'auth' instance you initialized and exported from config/firebase.ts
-import { auth } from "../config/firebase"; // Adjust path if needed
+import { auth } from "../config/firebase"; 
 
 const AuthForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState<any>(null); // To store the current user object
+  const [user, setUser] = useState<any>(null);
 
-  // This hook observes the user's authentication state
-  // It runs once when the component mounts, and again whenever the user's
-  // login status changes (sign-in, sign-out, token refresh, etc.)
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser); // Update the user state
@@ -31,25 +25,21 @@ const AuthForm: React.FC = () => {
       }
     });
 
-    // Clean up the subscription when the component unmounts
     return () => unsubscribe();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []); 
 
   const handleSignUp = async () => {
     try {
       setMessage("Signing up...");
-      // Use createUserWithEmailAndPassword with your 'auth' instance
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password,
       );
-      // userCredential.user contains information about the newly created user
       setMessage(`Successfully signed up: ${userCredential.user.email}`);
       setEmail("");
       setPassword("");
     } catch (error: any) {
-      // Handle errors (e.g., weak password, email already in use)
       console.error("Sign-up error:", error.message);
       setMessage(`Sign-up error: ${error.message}`);
     }
@@ -58,7 +48,6 @@ const AuthForm: React.FC = () => {
   const handleSignIn = async () => {
     try {
       setMessage("Signing in...");
-      // Use signInWithEmailAndPassword with your 'auth' instance
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
@@ -68,7 +57,6 @@ const AuthForm: React.FC = () => {
       setEmail("");
       setPassword("");
     } catch (error: any) {
-      // Handle errors (e.g., user not found, wrong password)
       console.error("Sign-in error:", error.message);
       setMessage(`Sign-in error: ${error.message}`);
     }
@@ -91,7 +79,7 @@ const AuthForm: React.FC = () => {
     >
       <h2>Firebase Email/Password Authentication for NUSing My Brain</h2>
 
-      {!user ? ( // Show login/signup form if no user is logged in
+      {!user ? (
         <>
           <div>
             <label htmlFor="email">Email:</label>
@@ -121,7 +109,6 @@ const AuthForm: React.FC = () => {
           </div>
         </>
       ) : (
-        // Show user info and sign-out button if user is logged in
         <div>
           <h3>Hello, {user.email}!</h3>
           <p>Your User ID (UID): {user.uid}</p>

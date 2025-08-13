@@ -40,7 +40,6 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // This useEffect hook is correct and does not need changes.
   useEffect(() => {
     if (!user || !chatId || authLoading) return;
     const chatDocRef = doc(db, 'chats', chatId);
@@ -62,10 +61,8 @@ export default function ChatPage() {
       unsubscribeChat();
       unsubscribeMessages();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, chatId, authLoading]);
 
-  // handleSendMessage function is correct and does not need changes.
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() === '' || !user) return;
@@ -83,14 +80,11 @@ export default function ChatPage() {
     }
   };
   
-  // This helper function now has more responsibility.
   const getParticipantInfo = (senderId) => {
     if (!chatInfo || !senderId) return { name: "Unknown" };
-    // The '??' (nullish coalescing operator) provides a safe fallback.
     return chatInfo.participantInfo?.[senderId] ?? { name: "Unknown" };
   };
 
-  // Guard to show a loading spinner is correct and does not need changes.
   if (loading || authLoading) {
     return (
       <div className="flex justify-center items-center h-screen">

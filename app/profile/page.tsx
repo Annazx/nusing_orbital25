@@ -113,7 +113,7 @@ export default function TutorSetupPage() {
           <p className = "text-base-content/70 mb-4">This information will be visible to students seeking help.</p>
 
           <Form onSubmit={handleSubmit} className="flex gap-10 justify-center items-center">
-            {/* NAME FIELD */}
+            {/* Name field */}
             <Input
               isRequired
               label="Full Name"
@@ -125,7 +125,7 @@ export default function TutorSetupPage() {
               onValueChange={handleValueChange("name")}
             />
 
-            {/* BIO FIELD */}
+            {/* Bio field */}
             <Textarea
               isRequired
               label="Bio"
@@ -137,7 +137,7 @@ export default function TutorSetupPage() {
               onValueChange={handleValueChange("bio")}
             />
 
-            {/* PREFERRED RATE FIELD */}
+            {/* Prefered rate field */}
             <Input
               isRequired
               label="Preferred Rate ($/hr)"
@@ -151,7 +151,7 @@ export default function TutorSetupPage() {
               onValueChange={handleValueChange("preferredRate")}
             />
 
-            {/* MODULES FIELD */}
+            {/* Modules Field */}
              <Input
               isRequired
               label="Modules Taught"

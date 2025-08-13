@@ -52,8 +52,6 @@ export default function ChatButton({ tutorId, tutorName }) {
     }
   };
 
-  // Don't render the button if auth is loading, user isn't logged in,
-  // or the user is looking at their own profile.
   if (loading || !user || user.uid === tutorId) {
     return null;
   }
